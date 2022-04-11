@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "651305817661",
+    "project_id": "flutter-instagram-clone-4f767",
+    "storage_bucket": "flutter-instagram-clone-4f767.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651305817661:android:48a77f5e6ba5b543917c54",
+        "android_client_info": {
+          "package_name": "com.example.instagramhomework"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651305817661-c68ilvjt0qeu1hjr1lfv2jiio37brq42.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTu7vHKlCuRAlPmQlfT599ru9sgwZ464c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651305817661-c68ilvjt0qeu1hjr1lfv2jiio37brq42.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651305817661:android:12545c6c44fe0a7c917c54",
+        "android_client_info": {
+          "package_name": "com.instagram.flutter_instagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651305817661-c68ilvjt0qeu1hjr1lfv2jiio37brq42.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTu7vHKlCuRAlPmQlfT599ru9sgwZ464c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651305817661-c68ilvjt0qeu1hjr1lfv2jiio37brq42.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
