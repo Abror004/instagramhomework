@@ -1,6 +1,6 @@
 # instagramhomework
 
-A new Flutter
+A new Flutter project.
 
 ## Getting Started
 
