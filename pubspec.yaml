@@ -22,7 +22,7 @@ dependencies:
 
   # for image
   image_picker: ^0.8.4+11
-  cached_network_image: ^3.2.0
+  cached_network_image: ^3.2.1
 
   shared_preferences: ^2.0.13
   logger: ^1.1.0
