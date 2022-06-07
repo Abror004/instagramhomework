@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:instagramhomework/models/user_model.dart' as model;
 import 'package:instagramhomework/pages/signin_page.dart';
 import 'package:instagramhomework/services/auth_service.dart';
-import 'package:instagramhomework/services/data_service.dart';
+import 'package:instagramhomework/services/data_service2.dart';
 import 'package:instagramhomework/services/pref_service.dart';
 import 'package:instagramhomework/services/theme_service.dart';
 import 'package:instagramhomework/services/utils.dart';
@@ -32,7 +32,6 @@ class _SignUpPageState extends State<SignUpPage> {
     String email = emailController.text.trim().toString();
     String confirmPassword = confirmPasswordController.text.trim().toString();
     String password = passwordController.text.trim().toString();
-    print("fullname: ${fullName}\nemail: ${email}\nconfirmPassword: ${confirmPassword}\npassword: ${password}\n");
     if((email.isEmpty || password.isEmpty || fullName.isEmpty || confirmPassword.isEmpty) && password == confirmPassword) {
       Utils.fireSnackBar("Please complete all the fields", context);
       return;
@@ -51,7 +50,7 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       isLoading = false;
     });
-
+    print(map);
     if(!map.containsKey("SUCCESS")) {
       if(map.containsKey("weak-password")) Utils.fireSnackBar("The password provided is too weak.", context);
       if(map.containsKey("email-already-in-use")) Utils.fireSnackBar("The account already exists for that email.", context);
@@ -60,16 +59,11 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     User? user = map["SUCCESS"];
-    print("+++++++++++++++++++++++++++++++++++++++++++++++++++++ ");
     if(user == null) return;
-    print("_____________________________________________________");
     await Prefs.store(StorageKeys.UID, user.uid);
     modelUser.uid = user.uid;
-    print("++++++++++++++++++++++++++++++++++++++++++++++++++++  ${modelUser.uid.toString()}");
-    DataService.storeUser(modelUser).then((value) => {
-      print("++++++++++++++++++++++++++++++++++++++++++++++++"),
+    DataService2.storeUser(modelUser).then((value) => {
       Navigator.pushReplacementNamed(context, SignInPage.id),
-
     });
   }
 

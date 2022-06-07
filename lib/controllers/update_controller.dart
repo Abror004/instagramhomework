@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagramhomework/controllers/profile_controller.dart';
 import 'package:instagramhomework/models/post_model.dart';
+import 'package:instagramhomework/models/user_model.dart';
 import 'package:instagramhomework/pages/home_page.dart';
-import 'package:instagramhomework/services/data_service.dart';
+import 'package:instagramhomework/services/data_service2.dart';
 import 'package:instagramhomework/services/file_service.dart';
 
 class Update_Controller extends GetxController {
@@ -88,11 +90,12 @@ class Update_Controller extends GetxController {
 
   void _apiStorePost(Post storePost) async {
     // Post to all posts folder
-    await DataService.storeToAllPosts(storePost);
+    await DataService2.storeToAllPosts(post: storePost);
     _moveToFeed();
   }
 
   void _moveToFeed() {
+    Get.find<Profile_Controller>().user = User.isEmpty();
     isLoading.value = false;
     Navigator.pushReplacementNamed(context!, Home_Page.id);
     update();

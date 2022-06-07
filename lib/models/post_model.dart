@@ -10,7 +10,6 @@ class Post {
   /// image info
   late String postImage;   /// image url
   late String postImageId; /// image uid
-  double? height;          /// image height
   /// others info
   bool isLiked = false;    /// liked or unliked  #changeable
   bool isMine = false;     /// my or not mine    #changeable
@@ -20,6 +19,7 @@ class Post {
     required this.caption,
     required this.postImageId,
   });
+  Post.isEmpty();
 
   Post.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];
@@ -32,7 +32,6 @@ class Post {
     isLiked = json["isLiked"];
     isMine = json["isMine"];
     imageUser = json["imageUser"];
-    height = json["height"];
   }
 
   Map<String, dynamic> toJson() => {
@@ -46,14 +45,18 @@ class Post {
     "isLiked": isLiked,
     "isMine": isMine,
     "imageUser": imageUser,
-    "height": height,
   };
 
-  @override
-  bool operator == (Object other) {
-    return other is Post && other.createdDate == createdDate;
-  }
-
-  @override
-  int get hashCode => createdDate.hashCode;
+  // @override
+  // String toString() {
+  //   return '$uid + $fullName + $id + $postImage + $postImageId + $caption + $createdDate + $isLiked + $isMine  + $imageUser';
+  // }
+  //
+  // @override
+  // bool operator == (Object other) {
+  //   return other is Post && other.createdDate != createdDate;
+  // }
+  //
+  // @override
+  // int get hashCode => createdDate.hashCode;
 }

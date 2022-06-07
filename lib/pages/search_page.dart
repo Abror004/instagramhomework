@@ -29,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
       body: SingleChildScrollView(
         primary: true,
         child: Obx(
-          () => Container(
+          () => SizedBox(
             height: search_controller.height.value,
             width: search_controller.width.value,
             child: Column(
@@ -37,31 +37,31 @@ class _SearchPageState extends State<SearchPage> {
                 Container(
                   height: 40,
                   color: Colors.white,
-                  margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                   child: textField(hintText: "search", controller: search_controller.controller.value,function: search_controller.loadUsers),
                 ),
                 SizedBox(
                   height: 50,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: search_controller.types.value.length,
+                      itemCount: search_controller.types.length,
                       itemBuilder: (context,index) {
                         return MaterialButton(
                           color: index == search_controller.selectType.value ? Colors.green : Colors.grey,
-                          shape: StadiumBorder(),
+                          shape: const StadiumBorder(),
                           onPressed: () {
                             search_controller.selectTypeEdit(index);
                           },
-                          child: Text(search_controller.types.value[index],style: TextStyle(color: Colors.white),),
+                          child: Text(search_controller.types[index],style: const TextStyle(color: Colors.white),),
                         );
                       },
                     ),
                   ),
                 ),
                 if(search_controller.isLoading.value)
-                  Expanded(child: Center(child: CircularProgressIndicator(),)),
+                  const Expanded(child: Center(child: CircularProgressIndicator(),)),
                 if(!search_controller.isLoading.value)
                   search(selectType: search_controller.selectType.value,context: context),
                 Container(height: 70,),
@@ -81,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
         backgroundImage: NetworkImage(imageUrl),
       );
     } else {
-      return CircleAvatar(
+      return const CircleAvatar(
         radius: 25,
         backgroundColor: Colors.white,
         backgroundImage: AssetImage("assets/images/user.png"),
@@ -94,11 +94,11 @@ class _SearchPageState extends State<SearchPage> {
       return Expanded(
         child: ListView.builder(
           shrinkWrap: true,
-          itemCount: search_controller.users.value.length,
+          itemCount: search_controller.users.length,
           itemBuilder: (context,index) {
             return ListTile(
-              leading: userImageWidget(search_controller.users.value[index].imageUrl),
-              title: Text(search_controller.users.value[index].fullName,style: TextStyle(color: Colors.black),),
+              leading: userImageWidget(search_controller.users[index].imageUrl),
+              title: Text(search_controller.users[index].fullName,style: const TextStyle(color: Colors.black),),
               trailing: Container(
                 height: 40,
                 width: 90,
@@ -107,13 +107,13 @@ class _SearchPageState extends State<SearchPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: MaterialButton(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   onPressed: () {
                     setState(() {});
-                    search_controller.users.value[index].followed = !(search_controller.users.value[index].followed);
+                    search_controller.users[index].followed = !(search_controller.users[index].followed);
                     search_controller.likedFunction(index: index);
                   },
-                  child: Text(search_controller.users.value[index].followed ? "followed" : "follow",style: TextStyle(color: Colors.white),),
+                  child: Text(search_controller.users[index].followed ? "followed" : "follow",style: const TextStyle(color: Colors.white),),
                 ),
               ),
             );
@@ -130,25 +130,25 @@ class _SearchPageState extends State<SearchPage> {
             crossAxisSpacing: 4,
             repeatPattern: QuiltedGridRepeatPattern.same,
             pattern: [
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(2, 2),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(2, 2),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
 
-              QuiltedGridTile(2, 2),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
+              const QuiltedGridTile(2, 2),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
+              const QuiltedGridTile(1, 1),
             ],
           ),
           itemCount: 100,

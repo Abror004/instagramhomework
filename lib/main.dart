@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
     //   },
     // );
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue
       ),

@@ -25,6 +25,7 @@ dependencies:
   cached_network_image: ^3.2.0
 
   shared_preferences: ^2.0.13
+  logger: ^1.1.0
 
   intl: ^0.17.0
   

@@ -1,9 +1,12 @@
-class PostUid {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instagramhomework/models/post_model.dart';
+
+class OnlyUid {
   String uid = "";
 
-  PostUid({required this.uid});
+  OnlyUid({required this.uid});
 
-  PostUid.fromJson(Map<String, dynamic> json) {
+  OnlyUid.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];
   }
 
@@ -12,32 +15,12 @@ class PostUid {
   };
 }
 
-class UserSearch {
-  String name = "";
-  String imageUrl = "";
-  bool isFollowing = false;
 
-  UserSearch({
-    required this.name,
-    required this.imageUrl,});
+class FeedData {
+  List<Post>? posts;
+  List<User>? followings;
+
+  FeedData.data({required this.posts, required this.followings});
+
+
 }
-
-// class FeedUsers {
-//   String uid = "";
-//   String imageUrl = "";
-//   String fullname = "";
-//
-//   FeedUsers({required this.uid, required this.fullname});
-//
-//   FeedUsers.fromJson(Map<String, dynamic> json) {
-//     uid = json["uid"];
-//     imageUrl = json["imageUrl"];
-//     fullname = json["fullname"];
-//   }
-//
-//   Map<String, dynamic> toJson() => {
-//     "uid": uid,
-//     "imageUrl": imageUrl,
-//     "fullname": fullname,
-//   };
-// }

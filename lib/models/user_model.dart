@@ -8,8 +8,12 @@ class User {
   bool followed = false;
   int followersCount = 0;
   int followingCount = 0;
+  String a = "";
+  String b = "";
+  String c = "";
 
   User({required this.fullName, required this.email, required this.password});
+  User.isEmpty();
 
   User.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];

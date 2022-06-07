@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:instagramhomework/models/post_model.dart';
 import 'package:instagramhomework/models/other_models.dart';
 import 'package:instagramhomework/models/user_model.dart';
-import 'package:instagramhomework/services/data_service.dart';
+import 'package:instagramhomework/services/data_service2.dart';
 import 'package:instagramhomework/services/file_service.dart';
-import 'package:instagramhomework/services/required_service.dart';
+import 'package:instagramhomework/services/required_service2.dart';
 import 'package:instagramhomework/services/utils.dart';
 
 class FeedController extends GetxController{
@@ -15,109 +15,45 @@ class FeedController extends GetxController{
   double width = 0.0;
   bool isLoading = false;
   bool postLoading = false;
-  List<String> followingsList = [];
-  Map<String,User>  followings = {};
+  List<User> followings = [];
+  Map followingList = {};
   List<Post> posts = [];
   BuildContext? context;
-  User user = User(fullName: "", email: "", password: "");
+  User user = User.isEmpty();
 
   // for load user
   Future<void> apiLoadUser() async {
     isLoading = true;
     update();
-    await DataService.loadUser().then((value) => _showUserInfo(value));
+    await DataService2.loadUser().then((value) => _showUserInfo(value));
   }
 
   void _showUserInfo(User infoUser) {
     user = infoUser;
-    if(followingsList.contains(user.uid)) {
-      followingsList.remove(user.uid);
-      followingsList = [user.uid]+followingsList;
-    } else {
-      followingsList = [user.uid]+followingsList;
-      followings[user.uid] = user;
-    }
+    followings.remove(user);
+    followings = [user] + followings;
     isLoading = false;
     update();
   }
-
-  // for load feeds
-  // Future apiLoadFeeds() async {
-  //   isLoading.value = true;
-  //   posts.clear();
-  //   followings.clear();
-  //   followingsList.clear();
-  //   await DataService.loadFeeds().then((followingsUid) => {
-  //     // followingsUid.forEach((userUid) async {
-  //       // Service.loadThisUserPosts(userUid: userUid.uid).then((posts) => _apiLoadFeeds2(posts));
-  //       // Service.loadUser(uid: userUid.uid).then((user) => {
-  //       //   Service.loadUserImageUrl(user: user).then((imageUrl) => _followingsImages(userUid: user.uid, imageUrl: imageUrl,fullname: user.fullName))
-  //       // });
-  //     // })
-  //   });
-  //   print("${posts.value.length} : ${followings.value.length} : ${followingsList.value.length}");
-  //   isLoading.value = false;
-  // }
 
   Future<void> apiLoadFeeds() async {
     postLoading = true;
     update();
     posts.clear();
     followings.clear();
-    followingsList.clear();
-    await DataService.loadFeeds().then((followingsUid) => {
-      // print("boshlandi"),
-      loadFollowings(followingUsers: followingsUid),
-      // print("tugadi")
-    });
-  }
-
-  Future<void> loadFollowings({required List<String> followingUsers}) async {
-    followingUsers.forEach((userUid) {
-      followingsList.add(userUid);
-      Service.loadUser(uid: userUid).then((user) => loadUser(user));
-    });
-  }
-
-  Future<void> loadUser(user) async {
-    await Service.loadThisUserPosts(userUid: user.uid).then((loadPosts) => {
-      loading(loadPosts,user)
-    });
-  }
-
-  void loading(List<Post> loadPosts,User followingUser ) async {
-    followings[followingUser.uid] = followingUser;
-    checkPosts(loadPosts, followingUser.uid);
-  }
-
-  Future<void> checkPosts(List<Post> loadPosts,String userUid) async {
-    loadPosts.forEach((post) {
-      checkPosts2(post: post, id: loadPosts.last.id);
-    });
-  }
-
-  Future<void> checkPosts2({required Post post,required String id}) async {
-    await Service.checkLike(postUid: post.id,userUid: post.uid).then((list) => checkLiked(post: post,res: list[0],isMine: list[1],id: id));
-  }
-
-  Future<void> checkLiked({required Post post,required bool res,required bool isMine,required String id}) async {
-    print("! ${post.isMine}");
-    post.isLiked = res;
-    post.isMine = isMine;
-    posts.add(post);
-    if(post.id == id) {
-      if(followingsList.contains(user.uid)) {
-        followingsList.remove(user.uid);
-        followingsList = [user.uid]+followingsList;
-      } else {
-        followingsList = [user.uid]+followingsList;
-        followings[user.uid] = user;
-      }
-      postLoading = false;
-      update();
+    List data = await DataService2.loadFeeds();
+    followings = data[0] as List<User>;
+    posts = data[1] as List<Post>;
+    for(int i=0; i<followings.length; i++) {
+      followingList[followings[i].uid] = followings[i].imageUrl;
     }
-    print(posts.length);
+
+    for(var x in posts) {
+      print("\nuid: ${x.uid}\nfullName: ${x.fullName}\nimageUser: ${x.imageUser}\ncaption: ${x.caption}\npostImage: ${x.postImage}\npostImageId: ${x.postImageId}\nisLiked: ${x.isLiked}\nisMine: ${x.isMine}\nid: ${x.id}");
+    }
+    update();
   }
+
 
   // Future _loadFeeds({required String userUid}) async {
   //   followings.value[userUid] = (await Service.loadUser(uid: userUid));
@@ -149,21 +85,20 @@ class FeedController extends GetxController{
     bool result = await Utils.dialogCommon(context, "Instagram Clone", "Do yu want to remove this post?", false);
     if(result) {
       FileService.deletePostImage(id: post.postImageId);
-      await Service.removePost(postUid: post.id);
+      await Service2.removePost(postUid: post.id);
       apiLoadFeeds();
     }
   }
-  void changeLiked(index) {
-    posts[index].isLiked = !posts[index].isLiked;
-    update();
-  }
 
   // for liked posts
-  void likedFunction({required index}) async {
-    bool liked = posts[index].isLiked;
-    while(liked != !posts[index].isLiked) {
-      liked = (await DataService.storeLiked(
-          postUid: PostUid(uid: posts[index].id), liked: liked));
-    }
+  void likedFunction({required index,required postUid}) async {
+    // bool liked = posts[index].isLiked;
+    // while(liked != !posts[index].isLiked) {
+    //   liked = await DataService.storeLiked(postUid: PostUid(uid: posts[index].id), liked: liked);
+    // }
+    posts[index].isLiked = !posts[index].isLiked;
+    update();
+    posts[index].isLiked = await DataService2.storeLiked(postUid: OnlyUid(uid: posts[index].id), liked: posts[index].isLiked);
+    update();
   }
 }

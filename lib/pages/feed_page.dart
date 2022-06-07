@@ -18,7 +18,6 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Get.find<FeedController>().apiLoadUser();
     Get.find<FeedController>().apiLoadFeeds();
@@ -27,52 +26,39 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     Get.find<FeedController>().context = context;
-    Get.find<FeedController>().height = MediaQuery.of(context).size
-        .height;
-    Get
-        .find<FeedController>()
-        .width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    Get.find<FeedController>().height = MediaQuery.of(context).size.height;
+    Get.find<FeedController>().width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: appBar(title: "Instagram",
-          icon: Icon(FontAwesomeIcons.facebookMessenger, color: Colors.black,)),
+          icon: const Icon(FontAwesomeIcons.facebookMessenger, color: Colors.black,)),
       body: GetBuilder<FeedController>(
           init: FeedController(),
           builder: (feedController) {
             return feedController.postLoading && feedController.isLoading
-                ? Center(child: CircularProgressIndicator(),)
+                ? const Center(child: CircularProgressIndicator(),)
                 : SingleChildScrollView(
               primary: true,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // members
-                  Container(
+                  SizedBox(
                     height: feedController.width / 3.3,
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: feedController.followings.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          // print("image ${feedController.followings[feedController
-                          //     .followingsList[index]]!.imageUrl!}\nname ${feedController.followings[feedController
-                          //     .followingsList[index]]!.fullName}");
-                          if(feedController.followings[feedController
-                              .followingsList[index]]!.imageUrl != null) {
+                          if(feedController.followings[index].imageUrl != null) {
                             return members(
-                                imageUrl: feedController.followings[feedController
-                                    .followingsList[index]]!.imageUrl!,
-                                name: feedController.followings[feedController
-                                    .followingsList[index]]!.fullName,
+                                imageUrl: feedController.followings[index].imageUrl!,
+                                name: feedController.followings[index].fullName,
                                 width: feedController.width,
                                 index: index);
                           } else {
                             return members(
                                 imageUrl: "",
-                                name: feedController.followings[feedController
-                                    .followingsList[index]]!.fullName,
+                                name: feedController.followings[index].fullName,
                                 width: feedController.width,
                                 index: index);
                           }
@@ -82,9 +68,9 @@ class _FeedPageState extends State<FeedPage> {
 
                   // posts
                   feedController.isLoading && feedController.postLoading
-                      ? Center(
+                      ? const Center(
                     child: CircularProgressIndicator(),)
-                      : AllPosts(feedController.width),
+                      : allPosts(feedController.width),
                 ],
               ),
             );
@@ -92,12 +78,6 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
-
-  // Widget load({required imageUrl, required name, required width, required index}) {
-  //   print("image ${imageUrl}\nname ${feedController.followings[feedController
-  //       .followingsList[index]]!.fullName}");
-  //   return Container();
-  // }
 
   Widget members({required imageUrl, required name, required width, required index}) {
     return index == 0 ? Column(
@@ -107,11 +87,11 @@ class _FeedPageState extends State<FeedPage> {
           height: width / 4,
           width: width / 4,
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Stack(
               children: [
                 ClipOval(
-                  child: imageUrl == "" ? Image(
+                  child: imageUrl == "" ? const Image(
                     image: AssetImage("assets/images/user.png"),)
                       : Image(
                     image: NetworkImage(imageUrl),
@@ -132,7 +112,7 @@ class _FeedPageState extends State<FeedPage> {
                         color: Colors.white,
                       ),
                     ),
-                    child: Icon(Icons.add, size: 15, color: Colors.white,),
+                    child: const Icon(Icons.add, size: 15, color: Colors.white,),
                   ),
                 ),
               ],
@@ -140,7 +120,7 @@ class _FeedPageState extends State<FeedPage> {
           ),
         ),
         Text(
-          name, style: TextStyle(color: Colors.black, fontSize: 14),),
+          name, style: const TextStyle(color: Colors.black, fontSize: 14),),
       ],
     )
         : Column(
@@ -149,14 +129,14 @@ class _FeedPageState extends State<FeedPage> {
         Container(
           height: width / 4,
           width: width / 4,
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
           ),
           child: Container(
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.center,
                 colors: [
@@ -166,9 +146,9 @@ class _FeedPageState extends State<FeedPage> {
               ),
               borderRadius: BorderRadius.circular(50),
             ),
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             child: Container(
-              padding: EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(50),
@@ -186,31 +166,29 @@ class _FeedPageState extends State<FeedPage> {
           ),
         ),
         Text(
-          name, style: TextStyle(color: Colors.black, fontSize: 14),),
+          name, style: const TextStyle(color: Colors.black, fontSize: 14),),
       ],
     );
   }
 
   // for posts
-  Widget AllPosts(width) {
+  GetBuilder allPosts(width) {
     return GetBuilder<FeedController>(
         init: FeedController(),
         builder: (feedController) {
-          return Container(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: feedController.posts.length,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return post_widegt(feedController.posts[index], width, index);
-                }
-            ),
+          return ListView.builder(
+              shrinkWrap: true,
+              itemCount: feedController.posts.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return post_widegt(feedController.posts[index], feedController.followingList[feedController.posts[index].uid],width, index);
+              }
           );
         }
     );
   }
 
-  Widget post_widegt(Post post, width, index) {
+  Widget post_widegt(Post post, image, width, index) {
     return GetBuilder<FeedController>(
         init: FeedController(),
         builder: (feedController) {
@@ -227,8 +205,8 @@ class _FeedPageState extends State<FeedPage> {
                         height: 40,
                         width: 40,
                         child: ClipOval(
-                          child: post.imageUser != null ? Image.network(
-                            post.imageUser!, height: 40,
+                          child: image != null ? Image.network(
+                            image, height: 40,
                             width: 40,
                             fit: BoxFit.cover,
                             isAntiAlias: false,)
@@ -236,25 +214,16 @@ class _FeedPageState extends State<FeedPage> {
                               "assets/images/user.png", isAntiAlias: false),
                         ),
                       ),
-                      // Container(
-                      //   height: 40,
-                      //   width: 40,
-                      //   clipBehavior: Clip.antiAlias,
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //   ),
-                      //
-                      // ),
-                      SizedBox(width: 10,),
+                      const SizedBox(width: 10,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(post.fullName, style: TextStyle(
+                          Text(post.fullName, style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.bold),),
-                          Text(post.createdDate.substring(0, 16),
-                            style: TextStyle(color: Colors.black),),
+                          Text(post.createdDate.substring(0, 16)),
+                          //   style: TextStyle(color: Colors.black),),
                         ],
                       ),
                     ],
@@ -265,7 +234,7 @@ class _FeedPageState extends State<FeedPage> {
                       feedController.deletePost(
                           post: post, context: feedController.context!);
                     },
-                    icon: Icon(Icons.more_vert),
+                    icon: const Icon(Icons.more_vert),
                   ),
                 ],
               ),
@@ -305,29 +274,28 @@ class _FeedPageState extends State<FeedPage> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          feedController.changeLiked(index);
-                          feedController.likedFunction(index: index);
+                          feedController.likedFunction(index: index, postUid: post.id);
                         },
                         icon: Icon(post.isLiked ? Icons.favorite : Icons
-                            .favorite_border),
+                            .favorite_border, color: post.isLiked ? Colors.red : Colors.black,),
                         iconSize: 30,
                       ),
-                      ThemeService.icons(Icon(FontAwesomeIcons.comment),),
+                      ThemeService.icons(const Icon(FontAwesomeIcons.comment),),
                       ThemeService.icons(
-                          Icon(CupertinoIcons.paperplane_fill), size: 30.0),
+                          const Icon(CupertinoIcons.paperplane_fill), size: 30.0),
                     ],
                   ),
-                  ThemeService.icons(Icon(FontAwesomeIcons.bookmark)),
+                  ThemeService.icons(const Icon(FontAwesomeIcons.bookmark)),
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Text(post.caption, style: TextStyle(fontSize: 16),),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Text(post.caption, style: const TextStyle(fontSize: 16),),
               ),
-              Divider(
+              const Divider(
                 indent: 0,
-                color: Colors.grey,
-                height: 1,
+                color: Colors.black45,
+                height: 2,
               ),
             ],
           );
